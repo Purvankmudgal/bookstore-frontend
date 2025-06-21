@@ -47,14 +47,14 @@ export default function BooksContent() {
       <Typography variant="h4" gutterBottom>
         Books List
       </Typography>
-      <Grid container spacing={3}>
-        {books.map(book => (
-          <Grid item xs={12} sm={6} md={4} key={book._id} display="flex">
+      <Grid container spacing={3} alignItems="stretch">
+        {books.map((book) => (
+          <Grid item xs={12} sm={6} md={4} key={book._id}>
             <Card
               sx={{
+                height: '100%',
                 display: 'flex',
                 flexDirection: 'column',
-                height: '100%',
                 transition: 'transform 0.2s, box-shadow 0.2s',
                 '&:hover': {
                   transform: 'translateY(-6px)',
