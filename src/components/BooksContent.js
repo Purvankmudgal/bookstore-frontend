@@ -5,6 +5,7 @@ import {
   Grid,
   Card,
   CardContent,
+  CardMedia,
   Typography,
   CircularProgress,
   Box,
@@ -48,45 +49,85 @@ export default function BooksContent() {
       </Typography>
       <Grid container spacing={3}>
         {books.map((book) => (
-          <Grid item xs={12} sm={6} md={4} key={book._id} display="flex">
+          <Grid item xs={12} sm={6} md={4} key={book._id} display="flex" justifyContent="center">
             <Card
               sx={{
+                width: 320,
+                height: 480,
                 display: 'flex',
                 flexDirection: 'column',
-                height: '100%',
-                transition: 'transform 0.2s, box-shadow 0.2s',
+                boxShadow: 2,
+                borderRadius: 2,
+                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
                 '&:hover': {
-                  transform: 'translateY(-6px)',
-                  boxShadow: 6,
+                  transform: 'translateY(-8px)',
+                  boxShadow: 8,
                 },
+                overflow: 'hidden',
+                backgroundColor: '#fff',
               }}
             >
-              <CardContent sx={{ flexGrow: 1 }}>
-                <Typography variant="h6" gutterBottom>
+              <CardMedia
+                component="img"
+                image={book.coverImageUrl || 'https://via.placeholder.com/320x200?text=No+Image'}
+                alt={book.title}
+                sx={{
+                  height: 200,
+                  objectFit: 'cover',
+                  width: '100%',
+                  flexShrink: 0,
+                }}
+              />
+              <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+                <Typography
+                  variant="h6"
+                  gutterBottom
+                  sx={{
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  }}
+                  title={book.title}
+                >
                   {book.title}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
+                <Typography variant="body2" color="text.secondary" noWrap title={`Author: ${book.author}`}>
                   Author: {book.author}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
+                <Typography variant="body2" color="text.secondary" noWrap title={`Genre: ${book.genre || 'N/A'}`}>
                   Genre: {book.genre || 'N/A'}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
+                <Typography variant="body2" color="text.secondary" noWrap title={`Published: ${book.publishedYear || 'N/A'}`}>
                   Published: {book.publishedYear || 'N/A'}
                 </Typography>
-                <Typography variant="body2" color="text.primary">
+
+                <Typography
+                  variant="body1"
+                  color="text.primary"
+                  sx={{ mt: 1, fontWeight: 'bold' }}
+                >
                   ₹{book.price ? book.price.toFixed(2) : '0.00'}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
+                <Typography variant="body2" color="text.secondary" noWrap title={`Stock: ${book.stock || 0}`}>
                   In stock: {book.stock || 0}
                 </Typography>
-                {book.description && (
-                  <Typography variant="body2" color="text.secondary" mt={1}>
-                    {book.description.length > 100
-                      ? book.description.slice(0, 100) + '...'
-                      : book.description}
-                  </Typography>
-                )}
+
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  mt={1}
+                  sx={{
+                    flexGrow: 1,
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    display: '-webkit-box',
+                    WebkitLineClamp: 4,
+                    WebkitBoxOrient: 'vertical',
+                  }}
+                  title={book.description}
+                >
+                  {book.description || 'No description available.'}
+                </Typography>
               </CardContent>
             </Card>
           </Grid>
