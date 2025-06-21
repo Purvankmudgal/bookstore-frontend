@@ -11,17 +11,19 @@ const Login = () => {
   const handleChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const handleSubmit = async e => {
-    e.preventDefault();
-    setError('');
-    try {
-      const res = await axios.post('/auth/login', formData);
-      localStorage.setItem('token', res.data.token);
-      navigate('/');
-    } catch (err) {
-      setError(err.response?.data?.message || 'Login failed');
-    }
-  };
+  const { login } = useContext(AuthContext);
+
+const handleSubmit = async e => {
+  e.preventDefault();
+  setError('');
+  try {
+    await login(formData.email, formData.password);
+    navigate('/');
+  } catch (err) {
+    setError(err.response?.data?.message || 'Login failed');
+  }
+};
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">

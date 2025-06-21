@@ -11,11 +11,13 @@ const Register = () => {
   const handleChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
- const handleSubmit = async e => {
+const { register } = useContext(AuthContext);
+
+const handleSubmit = async e => {
   e.preventDefault();
   setError('');
   try {
-    await axios.post('/auth/register', formData);
+    await register(formData);
     navigate('/login');
   } catch (err) {
     setError(err.response?.data?.message || 'Registration failed');

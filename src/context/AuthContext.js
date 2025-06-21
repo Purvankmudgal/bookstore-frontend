@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
 import API from '../api';
+import jwt_decode from 'jwt-decode';
 
 export const AuthContext = createContext();
 
@@ -8,19 +9,29 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // On mount, check localStorage for token and validate if needed
     const token = localStorage.getItem('token');
     if (token) {
-      // Optionally, validate token or fetch user data here
-      setUser({}); // Just a placeholder, replace with real user data
+      try {
+        const decoded = jwt_decode(token);
+        setUser({ id: decoded.id, email: decoded.email });
+      } catch (err) {
+        console.error('Invalid token:', err);
+        localStorage.removeItem('token');
+        setUser(null);
+      }
     }
     setLoading(false);
   }, []);
 
   const login = async (email, password) => {
-    const res = await API.post('/auth/login', { email, password });
-    localStorage.setItem('token', res.data.token);
-    setUser(res.data.user);
+    try {
+      const res = await API.post('/auth/login', { email, password });
+      localStorage.setItem('token', res.data.token);
+      const decoded = jwt_decode(res.data.token);
+      setUser({ id: decoded.id, email: decoded.email });
+    } catch (error) {
+      throw error; // Let the component handle the error display
+    }
   };
 
   const logout = () => {
@@ -29,7 +40,11 @@ export const AuthProvider = ({ children }) => {
   };
 
   const register = async (userData) => {
-    await API.post('/auth/register', userData);
+    try {
+      await API.post('/auth/register', userData);
+    } catch (error) {
+      throw error;
+    }
   };
 
   return (
