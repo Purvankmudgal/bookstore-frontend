@@ -80,7 +80,7 @@ export default function BooksContent() {
                 alt={book.title}
                 sx={{
                   height: 200,
-                  objectFit: 'cover',
+                  objectFit: 'contain',
                   width: '100%',
                   flexShrink: 0,
                 }}
