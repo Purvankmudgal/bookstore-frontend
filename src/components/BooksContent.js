@@ -20,10 +20,13 @@ export default function BooksContent() {
     async function fetchBooks() {
       try {
         const res = await API.get('/books');
+        console.log('Fetched books:', res.data); // Debug API response
         setBooks(res.data);
       } catch (error) {
         if (error.response?.status === 401) {
           logout();
+        } else {
+          console.error('Failed to fetch books:', error);
         }
       } finally {
         setLoading(false);
@@ -47,7 +50,7 @@ export default function BooksContent() {
       <Typography variant="h4" gutterBottom>
         Books List
       </Typography>
-      <Grid container spacing={3}>
+      <Grid container spacing={3} justifyContent="center">
         {books.map((book) => (
           <Grid item xs={12} sm={6} md={4} key={book._id} display="flex" justifyContent="center">
             <Card
@@ -69,7 +72,11 @@ export default function BooksContent() {
             >
               <CardMedia
                 component="img"
-                image={book.coverImageUrl || 'https://via.placeholder.com/320x200?text=No+Image'}
+                image={
+                  book.coverImageUrl && book.coverImageUrl.trim() !== ''
+                    ? book.coverImageUrl
+                    : 'https://via.placeholder.com/320x200?text=No+Image'
+                }
                 alt={book.title}
                 sx={{
                   height: 200,
@@ -100,7 +107,6 @@ export default function BooksContent() {
                 <Typography variant="body2" color="text.secondary" noWrap title={`Published: ${book.publishedYear || 'N/A'}`}>
                   Published: {book.publishedYear || 'N/A'}
                 </Typography>
-
                 <Typography
                   variant="body1"
                   color="text.primary"
@@ -111,7 +117,6 @@ export default function BooksContent() {
                 <Typography variant="body2" color="text.secondary" noWrap title={`Stock: ${book.stock || 0}`}>
                   In stock: {book.stock || 0}
                 </Typography>
-
                 <Typography
                   variant="body2"
                   color="text.secondary"
