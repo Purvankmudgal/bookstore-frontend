@@ -49,17 +49,19 @@ export default function BooksContent() {
       </Typography>
       <Grid container spacing={3}>
         {books.map(book => (
-          <Grid item xs={12} sm={6} md={4} key={book._id}>
+          <Grid item xs={12} sm={6} md={4} key={book._id} display="flex">
             <Card
-  sx={{
-    transition: 'transform 0.2s, box-shadow 0.2s',
-    '&:hover': {
-      transform: 'translateY(-6px)',
-      boxShadow: 6,
-    },
-  }}
->
-
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                height: '100%',
+                transition: 'transform 0.2s, box-shadow 0.2s',
+                '&:hover': {
+                  transform: 'translateY(-6px)',
+                  boxShadow: 6,
+                },
+              }}
+            >
               {book.coverImageUrl && (
                 <CardMedia
                   component="img"
@@ -68,7 +70,7 @@ export default function BooksContent() {
                   alt={book.title}
                 />
               )}
-              <CardContent>
+              <CardContent sx={{ flexGrow: 1 }}>
                 <Typography variant="h6" gutterBottom>{book.title}</Typography>
                 <Typography variant="body2" color="text.secondary">
                   Author: {book.author}
