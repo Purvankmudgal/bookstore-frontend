@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: 'https://bookstore-backend-htmk.onrender.com/', // Change if needed
+  baseURL: 'https://bookstore-backend-hmqs.onrender.com/', // Change if needed
   withCredentials: true, // To send cookies if using cookie auth (optional)
 });
 
