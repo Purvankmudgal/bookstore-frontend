@@ -1,5 +1,4 @@
 export default function NotificationsPanel() {
-  // For demo, simple static notifications list
   const notifications = [
     'New message from John',
     'Your order has shipped',

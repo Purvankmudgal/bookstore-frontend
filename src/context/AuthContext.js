@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
 import API from '../api';
-import jwt_decode from 'jwt-decode';
+import {jwtDecode} from 'jwt-decode'; // Correct default import
 
 export const AuthContext = createContext();
 
@@ -12,12 +12,11 @@ export const AuthProvider = ({ children }) => {
     const token = localStorage.getItem('token');
     if (token) {
       try {
-        const decoded = jwt_decode(token);
-        setUser({ id: decoded.id, email: decoded.email });
-      } catch (err) {
-        console.error('Invalid token:', err);
+        const decoded = jwtDecode(token);
+        setUser(decoded);
+      } catch (error) {
+        console.error('Invalid token:', error);
         localStorage.removeItem('token');
-        setUser(null);
       }
     }
     setLoading(false);
@@ -27,10 +26,9 @@ export const AuthProvider = ({ children }) => {
     try {
       const res = await API.post('/auth/login', { email, password });
       localStorage.setItem('token', res.data.token);
-      const decoded = jwt_decode(res.data.token);
-      setUser({ id: decoded.id, email: decoded.email });
+      setUser(jwtDecode(res.data.token));
     } catch (error) {
-      throw error; // Let the component handle the error display
+      throw error;
     }
   };
 

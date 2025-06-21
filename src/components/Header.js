@@ -31,7 +31,7 @@ export default function Header({ onLogout }) {
         <button
           onClick={() => {
             setShowNotifications(prev => !prev);
-            setShowProfile(false); // close profile if open
+            setShowProfile(false);
           }}
           className="relative focus:outline-none"
           aria-label="Notifications"
@@ -48,11 +48,9 @@ export default function Header({ onLogout }) {
             <path d="M18 8a6 6 0 00-12 0v5H4l2 3h12l2-3h-2z" />
             <path d="M13.73 21a2 2 0 01-3.46 0" />
           </svg>
-          {/* Example red dot for new notifications */}
           <span className="absolute top-0 right-0 inline-block w-2 h-2 bg-red-600 rounded-full"></span>
         </button>
 
-        {/* Notification panel */}
         {showNotifications && <NotificationsPanel />}
       </div>
 
@@ -61,7 +59,7 @@ export default function Header({ onLogout }) {
         <button
           onClick={() => {
             setShowProfile(prev => !prev);
-            setShowNotifications(false); // close notifications if open
+            setShowNotifications(false);
           }}
           className="flex items-center space-x-2 focus:outline-none"
           aria-label="Profile options"

@@ -1,29 +1,26 @@
-// src/components/Register.js
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from '../api';
+import { AuthContext } from '../context/AuthContext';
 
 const Register = () => {
   const navigate = useNavigate();
+  const { register } = useContext(AuthContext);
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
 
   const handleChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-const { register } = useContext(AuthContext);
-
-const handleSubmit = async e => {
-  e.preventDefault();
-  setError('');
-  try {
-    await register(formData);
-    navigate('/login');
-  } catch (err) {
-    setError(err.response?.data?.message || 'Registration failed');
-  }
-};
-
+  const handleSubmit = async e => {
+    e.preventDefault();
+    setError('');
+    try {
+      await register(formData);
+      navigate('/login');
+    } catch (err) {
+      setError(err.response?.data?.message || 'Registration failed');
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">

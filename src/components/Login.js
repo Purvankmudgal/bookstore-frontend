@@ -1,29 +1,26 @@
-// src/components/Login.js
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from '../api';
+import { AuthContext } from '../context/AuthContext';
 
 const Login = () => {
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
 
   const handleChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const { login } = useContext(AuthContext);
-
-const handleSubmit = async e => {
-  e.preventDefault();
-  setError('');
-  try {
-    await login(formData.email, formData.password);
-    navigate('/');
-  } catch (err) {
-    setError(err.response?.data?.message || 'Login failed');
-  }
-};
-
+  const handleSubmit = async e => {
+    e.preventDefault();
+    setError('');
+    try {
+      await login(formData.email, formData.password);
+      navigate('/');
+    } catch (err) {
+      setError(err.response?.data?.message || 'Login failed');
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
