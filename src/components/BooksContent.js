@@ -50,7 +50,16 @@ export default function BooksContent() {
       <Grid container spacing={3}>
         {books.map(book => (
           <Grid item xs={12} sm={6} md={4} key={book._id}>
-            <Card>
+            <Card
+  sx={{
+    transition: 'transform 0.2s, box-shadow 0.2s',
+    '&:hover': {
+      transform: 'translateY(-6px)',
+      boxShadow: 6,
+    },
+  }}
+>
+
               {book.coverImageUrl && (
                 <CardMedia
                   component="img"
