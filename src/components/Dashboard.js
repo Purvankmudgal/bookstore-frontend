@@ -2,17 +2,21 @@ import React, { useState, useContext } from 'react';
 import Sidebar from './Sidebar';
 import Header from './Header';
 import BooksContent from './BooksContent';
-import ProfileContent from './ProfileContent';
+import ProfileContent from './ProfileContent'; // Import ProfileContent component
 import { AuthContext } from '../context/AuthContext';
 
 const MENU_ITEMS = [
   { key: 'books', label: 'Books' },
-  { key: 'profile', label: 'Profile' },
 ];
 
 export default function Dashboard() {
   const [selectedMenu, setSelectedMenu] = useState('books');
   const { logout } = useContext(AuthContext);
+
+  // Function to open profile content
+  function openProfile() {
+    setSelectedMenu('profile');
+  }
 
   function renderContent() {
     switch (selectedMenu) {
@@ -33,7 +37,7 @@ export default function Dashboard() {
         onSelect={setSelectedMenu}
       />
       <div className="flex flex-col flex-grow">
-        <Header onLogout={logout} />
+        <Header onLogout={logout} onOpenProfile={openProfile} />
         <main className="p-6 overflow-auto">{renderContent()}</main>
       </div>
     </div>

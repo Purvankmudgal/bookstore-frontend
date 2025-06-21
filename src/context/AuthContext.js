@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
+import jwtDecode from 'jwt-decode'; // If you use JWT tokens
 import API from '../api';
-import {jwtDecode} from 'jwt-decode'; // Correct default import
 
 export const AuthContext = createContext();
 
@@ -8,14 +8,15 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // On app start, check for token
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
       try {
         const decoded = jwtDecode(token);
-        setUser(decoded);
-      } catch (error) {
-        console.error('Invalid token:', error);
+        setUser(decoded); // or fetch user info from backend
+      } catch {
+        setUser(null);
         localStorage.removeItem('token');
       }
     }
@@ -23,30 +24,20 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = async (email, password) => {
-    try {
-      const res = await API.post('/auth/login', { email, password });
-      localStorage.setItem('token', res.data.token);
-      setUser(jwtDecode(res.data.token));
-    } catch (error) {
-      throw error;
-    }
+    const res = await API.post('/auth/login', { email, password });
+    const token = res.data.token;
+    localStorage.setItem('token', token);
+    const decoded = jwtDecode(token);
+    setUser(decoded);
   };
 
   const logout = () => {
-    localStorage.removeItem('token');
     setUser(null);
-  };
-
-  const register = async (userData) => {
-    try {
-      await API.post('/auth/register', userData);
-    } catch (error) {
-      throw error;
-    }
+    localStorage.removeItem('token');
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, register, loading }}>
+    <AuthContext.Provider value={{ user, loading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

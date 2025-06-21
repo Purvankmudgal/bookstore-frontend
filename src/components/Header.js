@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import NotificationsPanel from './NotificationsPanel';
 import ProfileDropdown from './ProfileDropdown';
 
-export default function Header({ onLogout }) {
+export default function Header({ onLogout, onOpenProfile }) {
   const [showProfile, setShowProfile] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
 
@@ -61,16 +61,21 @@ export default function Header({ onLogout }) {
             setShowProfile(prev => !prev);
             setShowNotifications(false);
           }}
-          className="flex items-center space-x-2 focus:outline-none"
-          aria-label="Profile options"
+          className="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center text-white font-bold focus:outline-none"
+          aria-label="Profile"
         >
-          <div className="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center text-white font-bold">
-            U
-          </div>
-          <span className="text-gray-700">Profile</span>
+          U
         </button>
 
-        {showProfile && <ProfileDropdown onLogout={onLogout} />}
+        {showProfile && (
+          <ProfileDropdown
+            onLogout={onLogout}
+            openProfile={() => {
+              onOpenProfile();
+              setShowProfile(false);
+            }}
+          />
+        )}
       </div>
     </header>
   );

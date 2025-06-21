@@ -11,16 +11,17 @@ const Login = () => {
   const handleChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const handleSubmit = async e => {
-    e.preventDefault();
-    setError('');
-    try {
-      await login(formData.email, formData.password);
-      navigate('/');
-    } catch (err) {
-      setError(err.response?.data?.message || 'Login failed');
-    }
-  };
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setError('');
+  try {
+    await login(formData.email, formData.password);
+    navigate('/');  // This will redirect to dashboard immediately after login
+  } catch (err) {
+    setError(err.response?.data?.message || 'Login failed');
+  }
+};
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
